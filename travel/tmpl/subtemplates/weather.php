@@ -137,7 +137,7 @@ echo '<h3 class="weather-left-menu__header">' . JTEXT::_('PLG_TRAVEL_WEATHER_FOR
             </div>
         </div>
 
-		<?php if ($perhour == '1') : ?>
+		<?php if ($perhour == '1' && isset($day->hour)) : ?>
 
 
         <div class="col-6">
