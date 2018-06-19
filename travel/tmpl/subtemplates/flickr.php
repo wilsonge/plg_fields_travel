@@ -57,13 +57,9 @@ if (!$key)
 $placeurl = "https://api.flickr.com/services/rest/?method=flickr.places.find&api_key=$key&query=$address&format=json&nojsoncallback=1";
 
 /* Getting the JSON DATA for Place */
-$placecall = curl_init();
-curl_setopt($placecall,CURLOPT_URL,$placeurl);
-curl_setopt($placecall,CURLOPT_RETURNTRANSFER,true);
-
-$json_output_place = curl_exec($placecall);
-
-$place = json_decode($json_output_place);
+$http              = JHttpFactory::getHttp();
+$json_output_place = $http->get($placeurl)->body;
+$place             = json_decode($json_output_place);
 
 $place_id = $place->places->place[0]->place_id;
 
@@ -71,11 +67,8 @@ $place_id = $place->places->place[0]->place_id;
 $url = "https://api.flickr.com/services/rest/?format=json&api_key=$key&method=flickr.photos.search&sort=interestingness-desc&nojsoncallback=1&per_page=$imgnum&media=photos&place_id=$place_id&accuracy=10&content_type=1&extras=url_l,tags,owner_name,description";
 
 /* Getting the JSON DATA */
-$ch = curl_init();
-curl_setopt($ch,CURLOPT_URL,$url);
-curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-
-$json_output=curl_exec($ch);
+$http        = JHttpFactory::getHttp();
+$json_output = $http->get($url)->body;
 
 $images = json_decode($json_output);
 

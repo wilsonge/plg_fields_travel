@@ -42,14 +42,9 @@ $address = JFilterOutput::stringURLSafe($field->rawvalue);
 $url = "https://api.opencagedata.com/geocode/v1/json?q=$address&key=$key&pretty=1";
 
 /* Getting the JSON DATA TO GET LAT & LONG */
-
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$curl_response = curl_exec($ch);
-$jsonobj = json_decode($curl_response);
+$http     = JHttpFactory::getHttp();
+$response = $http->get($url, null, 5)->body;
+$jsonobj  = json_decode($response);
 
 $lat = $jsonobj->results[0]->geometry->lat;
 $lon = $jsonobj->results[0]->geometry->lng;
